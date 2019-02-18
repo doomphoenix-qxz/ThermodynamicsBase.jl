@@ -1,5 +1,3 @@
-using Enums
-
 abstract type AbstractSubstance end
 abstract type AbstractPhaseState end
 abstract type AbstractMixture end
