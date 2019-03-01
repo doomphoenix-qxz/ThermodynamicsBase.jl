@@ -3,6 +3,7 @@ abstract type AbstractPhaseState end
 abstract type AbstractMixture end
 abstract type AbstractThermoBackend end
 abstract type AbstractEquationOfState <: AbstractThermoBackend end
+abstract type AbstractCubicEOS <: AbstractEquationOfState end
 abstract type AbstractMixingRules <: AbstractThermoBackend end
 abstract type AbstractActivityCoefficientModel <: AbstractThermoBackend end
 abstract type AbstractProperty end
