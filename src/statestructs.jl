@@ -7,7 +7,11 @@
 # least one or two of these properties, I can reasonably expect that I would be
 # able to calculate the others if I wanted to."
 
-struct MinimalState{T_<:AbstractFloat} # where T_ <: AbstractFloat
+function iscontainer(::AbstractPhaseState)
+    return false
+end
+
+struct MinimalState{T_<:AbstractFloat} <: AbstractPhaseState # where T_ <: AbstractFloat
     P::Union{T_, Missing}
     V::Union{T_, Missing}
     ρ::Union{T_, Missing}
@@ -17,7 +21,7 @@ end
 
 MinimalState{T_}() where T_ = MinimalState{T_}(missing, missing, missing, missing, missing)
 
-struct TherodynamicPotentialsState{T_<:AbstractFloat}
+struct TherodynamicPotentialsState{T_<:AbstractFloat} <: AbstractPhaseState
     S::Union{T_, Missing}
     U::Union{T_, Missing}
     H::Union{T_, Missing}
@@ -27,14 +31,16 @@ end
 
 TherodynamicPotentialsState{T_}() where T_ = TherodynamicPotentialsState{T_}(missing, missing, missing, missing, missing)
 
-struct FullPotentialsState{T_<:AbstractFloat}
+struct FullPotentialsState{T_<:AbstractFloat} <: AbstractPhaseState
     minstate::MinimalState{T_}
     potentials::TherodynamicPotentialsState{T_}
 end
 
+iscontainer(::FullPotentialsState) = true
+
 MinimalState() = MinimalState(missing, missing, missing, missing, missing)
 
-struct ChemicalState{T_<:AbstractFloat}
+struct ChemicalState{T_<:AbstractFloat} <: AbstractPhaseState
     μ::Union{T_, Missing}
     xᵢ::Union{T_, Missing}
     f::Union{T_, Missing}
@@ -45,15 +51,15 @@ end
 
 ChemicalState{T_}() where T_ = ChemicalState{T_}(missing, missing, missing, missing, missing)
 
-struct FullChemicalState{T_<:AbstractFloat}
+struct FullChemicalState{T_<:AbstractFloat} <: AbstractPhaseState
     minstate::MinimalState{T_}
     potentials::TherodynamicPotentialsState{T_}
     chemstate::ChemicalState{T_}
 end
 
+iscontainer(::FullChemicalState) = true
 
-
-struct TransportPropertiesState{T_<:AbstractFloat}
+struct TransportPropertiesState{T_<:AbstractFloat} <: AbstractPhaseState
     λ::Union{T_, Missing}
     μ::Union{T_, Missing}
     ν::Union{T_, Missing}
@@ -63,9 +69,11 @@ end
 
 TransportPropertiesState{T_}() where T_ = TransportPropertiesState{T_}(missing, missing, missing, missing, missing)
 
-struct FullState{T_<:AbstractFloat}
+struct FullState{T_<:AbstractFloat} <: AbstractPhaseState
     minstate::MinimalState{T_}
     potentials::TherodynamicPotentialsState{T_}
     chemstate::ChemicalState{T_}
     transtate::TransportPropertiesState{T_}
 end
+
+iscontainer(::FullState) = true
