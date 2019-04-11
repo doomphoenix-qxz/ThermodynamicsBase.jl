@@ -1,4 +1,5 @@
 using Test
+using ThermodynamicsBase
 
 struct mything <: AbstractEquationOfState
     name::AbstractString
@@ -16,4 +17,4 @@ Base.show(c::mything3) = c.name
 
 #function thermocalc(st::AbstractPhaseState, eos::AbstractEquationOfState, p::AbstractProperty)
 #println("We're sorry, the property $show(p) isn't implemented for $show(st) , using the $show(eos) equation of state.") end
-@test thermocalc(mything2("Generic Phase State"), mything("Generic EOS"), mything3("Generic Property"))
+@test thermocalc(mything2("Generic Phase State"), mything("Generic EOS"), mything3("Generic Property")) == "We're sorry, the property Generic Property isn't implemented for Generic State , using the Generic EOS equation of state."
